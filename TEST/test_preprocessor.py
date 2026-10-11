@@ -28,7 +28,20 @@ def test_t06_missing_field():
     print("[PASS] T06 - Missing field handled")
 
 
+def test_t14_malformed_event():
+    # T14: event invalid/unsupported -> không crash, status/reason phù hợp
+    result1 = preprocess("not a dict")
+    assert result1["preprocess_status"] == "invalid"
+    assert result1["processing_action"] == "drop"
+
+    result2 = preprocess({"protocol": "tcp"})  # thiếu IP bắt buộc
+    assert result2["preprocess_status"] == "invalid"
+    assert len(result2["reason"]) > 0
+    print("[PASS] T14 - Malformed event handled")
+
+
 if __name__ == "__main__":
     test_t05_normalization()
     test_t06_missing_field()
+    test_t14_malformed_event()
     print("\n=== Preprocessor tests PASSED ===")

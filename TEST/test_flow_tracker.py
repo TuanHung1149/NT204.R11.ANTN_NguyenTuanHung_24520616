@@ -67,10 +67,23 @@ def test_t11_concurrent_flows():
     print("[PASS] T11 - Concurrent flows not merged")
 
 
+def test_t12_idle_timeout():
+    # T12: flow không có packet mới quá timeout -> hết hạn, loại khỏi active table
+    ft = FlowTracker(udp_timeout=60)
+    ft.process(_pkt("10.0.0.1", 5353, "8.8.8.8", 53, proto="udp", size=70), 1000.0)
+    assert len(ft.flows) == 1
+    expired = ft.expire_flows(1000.0 + 61)
+    assert len(expired) == 1
+    assert len(ft.flows) == 0
+    assert expired[0].state == "CLOSED"
+    print("[PASS] T12 - Idle timeout expiry")
+
+
 if __name__ == "__main__":
     test_t07_tcp_handshake()
     test_t08_bidirectional()
     test_t09_tcp_close()
     test_t10_udp_flow()
     test_t11_concurrent_flows()
+    test_t12_idle_timeout()
     print("\n=== Flow tracker tests PASSED ===")

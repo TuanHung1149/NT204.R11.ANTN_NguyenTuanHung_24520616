@@ -34,7 +34,19 @@ def test_t08_bidirectional():
     print("[PASS] T08 - Bidirectional same flow")
 
 
+def test_t09_tcp_close():
+    # T09: FIN hoặc RST -> flow chuyển CLOSED/RESET
+    ft = FlowTracker()
+    ft.process(_pkt("1.1.1.1", 1, "2.2.2.2", 80, flags="S"), 1.0)
+    f = ft.process(_pkt("2.2.2.2", 80, "1.1.1.1", 1, flags="R"), 2.0)
+    assert f.state == "RESET"
+    assert len(ft.flows) == 0  # đã loại khỏi active table
+    assert len(ft.closed_flows) == 1
+    print("[PASS] T09 - TCP close RESET")
+
+
 if __name__ == "__main__":
     test_t07_tcp_handshake()
     test_t08_bidirectional()
+    test_t09_tcp_close()
     print("\n=== Flow tracker tests PASSED ===")

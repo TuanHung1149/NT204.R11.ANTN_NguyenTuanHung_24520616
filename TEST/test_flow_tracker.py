@@ -23,6 +23,18 @@ def test_t07_tcp_handshake():
     print("[PASS] T07 - TCP handshake ESTABLISHED")
 
 
+def test_t08_bidirectional():
+    # T08: A->B và B->A cùng 5-tuple đảo chiều -> cùng flow_id, đúng direction
+    ft = FlowTracker()
+    f1 = ft.process(_pkt("10.0.0.1", 5000, "10.0.0.2", 80, flags="S"), 1.0)
+    f2 = ft.process(_pkt("10.0.0.2", 80, "10.0.0.1", 5000, flags="SA"), 1.1)
+    assert f1.flow_id == f2.flow_id
+    assert len(ft.flows) == 1
+    assert f2.fwd_packets == 1 and f2.bwd_packets == 1
+    print("[PASS] T08 - Bidirectional same flow")
+
+
 if __name__ == "__main__":
     test_t07_tcp_handshake()
+    test_t08_bidirectional()
     print("\n=== Flow tracker tests PASSED ===")

@@ -79,6 +79,22 @@ def test_t12_idle_timeout():
     print("[PASS] T12 - Idle timeout expiry")
 
 
+def test_t13_statistics():
+    # T13: nhiều packet hai chiều -> packet/byte/flag counters và duration đúng
+    ft = FlowTracker()
+    ft.process(_pkt("10.0.0.1", 5000, "10.0.0.2", 80, flags="S", size=60), 1.0)
+    ft.process(_pkt("10.0.0.2", 80, "10.0.0.1", 5000, flags="SA", size=60), 1.5)
+    ft.process(_pkt("10.0.0.1", 5000, "10.0.0.2", 80, flags="A", size=52), 2.0)
+    f = ft.process(_pkt("10.0.0.1", 5000, "10.0.0.2", 80, flags="PA", size=200), 2.5)
+
+    assert f.packet_count == 4
+    assert f.byte_count == 372
+    assert f.fwd_packets == 3 and f.bwd_packets == 1
+    assert f.syn_count == 2 and f.ack_count == 3
+    assert f.duration() == 1.5
+    print("[PASS] T13 - Statistics counters correct")
+
+
 if __name__ == "__main__":
     test_t07_tcp_handshake()
     test_t08_bidirectional()
@@ -86,4 +102,5 @@ if __name__ == "__main__":
     test_t10_udp_flow()
     test_t11_concurrent_flows()
     test_t12_idle_timeout()
+    test_t13_statistics()
     print("\n=== Flow tracker tests PASSED ===")

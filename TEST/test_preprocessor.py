@@ -18,6 +18,17 @@ def test_t05_normalization():
     print("[PASS] T05 - Normalization consistent")
 
 
+def test_t06_missing_field():
+    # T06: event thiếu field không bắt buộc -> null/[] nhất quán, không exception
+    event = {"src_ip": "192.168.1.1", "dst_ip": "10.0.0.1", "protocol": "udp"}
+    result = preprocess(event)
+    assert result["src_port"] is None
+    assert result["dst_port"] is None
+    assert result["preprocess_status"] == "valid"
+    print("[PASS] T06 - Missing field handled")
+
+
 if __name__ == "__main__":
     test_t05_normalization()
+    test_t06_missing_field()
     print("\n=== Preprocessor tests PASSED ===")

@@ -57,9 +57,20 @@ def test_t10_udp_flow():
     print("[PASS] T10 - UDP query/response flow")
 
 
+def test_t11_concurrent_flows():
+    # T11: >=2 flow endpoint/port khác nhau -> không gộp nhầm
+    ft = FlowTracker()
+    ft.process(_pkt("10.0.0.1", 5000, "10.0.0.2", 80, flags="S"), 1.0)
+    ft.process(_pkt("10.0.0.1", 5001, "10.0.0.3", 443, flags="S"), 1.0)
+    ft.process(_pkt("10.0.0.5", 6000, "10.0.0.2", 22, flags="S"), 1.0)
+    assert len(ft.flows) == 3
+    print("[PASS] T11 - Concurrent flows not merged")
+
+
 if __name__ == "__main__":
     test_t07_tcp_handshake()
     test_t08_bidirectional()
     test_t09_tcp_close()
     test_t10_udp_flow()
+    test_t11_concurrent_flows()
     print("\n=== Flow tracker tests PASSED ===")

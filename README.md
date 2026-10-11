@@ -6,8 +6,15 @@
 
 IDS đơn giản viết bằng Python, sử dụng Scapy để bắt và phân tích gói tin mạng theo thời gian thực.
 
+## Pipeline
+
+```
+Packet Capture & Parser -> Decoder -> Preprocessor -> Flow/Connection Tracker -> Detection
+```
+
 ## Chức năng
 
+### Bài tập 1
 - Bắt gói tin mạng (packet capture)
 - Phân tích giao thức: TCP, UDP, DNS, HTTP
 - Phát hiện tấn công:
@@ -15,6 +22,12 @@ IDS đơn giản viết bằng Python, sử dụng Scapy để bắt và phân t
   - **Brute Force** - dò mật khẩu SSH/FTP/RDP
   - **SYN Flood** - tấn công DDoS
   - **DNS Anomaly** - DNS tunneling, DNS flood
+
+### Bài tập 2
+- **Decoder** - giải mã URL/percent, HTML entity, Base64/Quoted-Printable, ASCII/UTF-8
+- **Preprocessor** - validation (valid/partial/invalid), chuẩn hóa, xử lý field thiếu, gắn metadata
+- **Flow/Connection Tracker** - gom packet thành flow 2 chiều (5-tuple), theo dõi trạng thái TCP
+  (NEW/HANDSHAKE/ESTABLISHED/CLOSING/CLOSED/RESET), timeout UDP/TCP, thống kê packet/byte/flag
 
 ## Cài đặt
 
@@ -38,13 +51,25 @@ sudo python3 main.py eth0 "tcp port 80"
 ## Cấu trúc
 
 ```
-├── main.py          # Entry point
+├── main.py          # Entry point (chạy cả pipeline)
 ├── capture.py       # Bắt gói tin
 ├── parsers.py       # Phân tích TCP/UDP/DNS/HTTP
 ├── detectors.py     # Phát hiện tấn công
 ├── alert.py         # Hệ thống cảnh báo
-├── TEST/            # Kết quả test
+├── decoder.py       # Giải mã URL/HTML/MIME/charset
+├── preprocessor.py  # Validation + chuẩn hóa
+├── flow_tracker.py  # Flow/Connection tracker
+├── TEST/            # Test cases T01-T14
 └── logs/            # File log cảnh báo
+```
+
+## Test
+
+```bash
+cd TEST
+python3 test_decoder.py        # T01-T04
+python3 test_preprocessor.py   # T05, T06, T14
+python3 test_flow_tracker.py   # T07-T13
 ```
 
 ## Sử dụng AI

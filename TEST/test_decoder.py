@@ -34,8 +34,17 @@ def test_t03_smtp_base64_qp():
     print("[PASS] T03 - SMTP Base64/Quoted-Printable decode")
 
 
+def test_t04_invalid_bytes():
+    # T04: payload không phải UTF-8 hợp lệ -> đánh dấu partial, không crash
+    decoded, status = decode_bytes(b"\xff\xfe\x00 bad bytes")
+    assert status == "partial"
+    assert decoded is not None
+    print("[PASS] T04 - Invalid bytes handled")
+
+
 if __name__ == "__main__":
     test_t01_url_decode()
     test_t02_html_entity()
     test_t03_smtp_base64_qp()
+    test_t04_invalid_bytes()
     print("\n=== Decoder tests PASSED ===")

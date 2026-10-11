@@ -22,7 +22,20 @@ def test_t02_html_entity():
     print("[PASS] T02 - HTML entity decode")
 
 
+def test_t03_smtp_base64_qp():
+    # T03: MIME body có encoding -> decode đúng + decode_status
+    b64, st1 = decode_mime("SGVsbG8gd29ybGQ=", "base64")
+    assert b64 == "Hello world"
+    assert st1 == "ok"
+
+    qp, st2 = decode_mime("Hello=20World=21", "quoted-printable")
+    assert qp == "Hello World!"
+    assert st2 == "ok"
+    print("[PASS] T03 - SMTP Base64/Quoted-Printable decode")
+
+
 if __name__ == "__main__":
     test_t01_url_decode()
     test_t02_html_entity()
+    test_t03_smtp_base64_qp()
     print("\n=== Decoder tests PASSED ===")

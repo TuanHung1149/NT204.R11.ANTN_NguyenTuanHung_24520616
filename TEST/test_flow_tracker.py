@@ -45,8 +45,21 @@ def test_t09_tcp_close():
     print("[PASS] T09 - TCP close RESET")
 
 
+def test_t10_udp_flow():
+    # T10: DNS UDP hai chiều -> 1 UDP flow, packet/byte count đúng
+    ft = FlowTracker()
+    ft.process(_pkt("10.0.0.1", 5353, "8.8.8.8", 53, proto="udp", size=70, ptype="DNS"), 1.0)
+    f = ft.process(_pkt("8.8.8.8", 53, "10.0.0.1", 5353, proto="udp", size=120, ptype="DNS"), 1.1)
+    assert len(ft.flows) == 1
+    assert f.packet_count == 2
+    assert f.byte_count == 190
+    assert f.application_protocol == "DNS"
+    print("[PASS] T10 - UDP query/response flow")
+
+
 if __name__ == "__main__":
     test_t07_tcp_handshake()
     test_t08_bidirectional()
     test_t09_tcp_close()
+    test_t10_udp_flow()
     print("\n=== Flow tracker tests PASSED ===")

@@ -89,6 +89,8 @@ def parse_content_pattern(raw):
 
 def parse_ip_spec(spec):
     spec = spec.strip()
+    if spec.startswith("$"):
+        raise RuleError(f"bien chua dinh nghia trong config: {spec}")
     negate = spec.startswith("!")
     if negate:
         spec = spec[1:].strip()
@@ -115,6 +117,8 @@ def parse_ip_spec(spec):
 
 def parse_port_spec(spec):
     spec = spec.strip()
+    if spec.startswith("$"):
+        raise RuleError(f"bien chua dinh nghia trong config: {spec}")
     negate = spec.startswith("!")
     if negate:
         spec = spec[1:].strip()
@@ -179,6 +183,32 @@ def _strip_quotes(value):
     return value
 
 
+def _content_value(value):
+    # Phai dung dang "..." ; '!' (phu dinh) va tham so kieu Snort3 ("x",nocase)
+    # deu chua ho tro -> bao unsupported thay vi hieu nham thanh chuoi literal.
+    v = (value or "").strip()
+    if v.startswith("!"):
+        raise RuleUnsupported("content phu dinh '!' chua ho tro")
+    if not v.startswith('"'):
+        raise RuleError(f"content phai dat trong dau nhay: {value}")
+
+    i = 1
+    closing = -1
+    while i < len(v):
+        if v[i] == "\\" and i + 1 < len(v):
+            i += 2
+            continue
+        if v[i] == '"':
+            closing = i
+            break
+        i += 1
+    if closing == -1:
+        raise RuleError(f"content thieu dau nhay dong: {value}")
+    if closing != len(v) - 1:
+        raise RuleUnsupported(f"content co tham so phu chua ho tro: {v[closing + 1:]}")
+    return v[1:closing]
+
+
 def _int_option(name, value):
     try:
         return int(_strip_quotes(value))
@@ -218,9 +248,10 @@ def parse_options(text):
         elif name == "content":
             if value is None:
                 raise RuleError("content thieu gia tri")
+            text = _content_value(value)
             rule["contents"].append({
-                "pattern": parse_content_pattern(_strip_quotes(value)),
-                "raw": _strip_quotes(value),
+                "pattern": parse_content_pattern(text),
+                "raw": text,
                 "nocase": False, "offset": None, "depth": None,
                 "distance": None, "within": None,
             })

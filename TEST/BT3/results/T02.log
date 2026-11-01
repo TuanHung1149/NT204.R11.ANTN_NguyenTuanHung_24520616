@@ -1,0 +1,21 @@
+T02 - Rule sai cu phap bi danh dau invalid, engine chay tiep
+  valid      sid=900101   Rule tot
+  invalid    sid=None     alert tcp any -> any 80 (msg:"Thieu
+             ly do: header phai co 7 phan, dang co 6
+  invalid    sid=None     alert tcp any any -> any 80 (msg:"T
+             ly do: thieu sid
+  invalid    sid=None     alert tcp any any -> any 80 (msg:"S
+             ly do: sid phai la so nguyen, nhan 'abc'
+  invalid    sid=None     alert tcp any any -> any 99999 (msg
+             ly do: port ngoai pham vi: 99999
+  invalid    sid=None     alert tcp any any -> any 80 (msg:"M
+             ly do: 'nocase' khong co content dung truoc
+  valid      sid=900105   Van chay tiep
+  [PASS] co 5 rule invalid (thuc te 5)
+  [PASS] moi rule invalid deu co ly do
+  [PASS] 2 rule hop le van duoc nap
+  [PASS] repository chi nhan rule valid
+  [PASS] repository ghi nhan rule invalid
+  [PASS] rule truoc va sau loi deu nap duoc
+
+=== T02 PASSED ===

@@ -54,7 +54,15 @@ check(r_req["match"], "request to_server + established -> MATCH")
 check(not r_syn["match"], "SYN chua established -> NO MATCH")
 check(r_syn["stage"] == "flow", "SYN bi loai o buoc flow")
 check(not r_resp["match"], "response (to_client) -> NO MATCH")
-check(r_resp["stage"] == "flow", "response bi loai o buoc flow")
+check(r_resp["stage"] == "header", "response bi loai ngay o header (dst_port != 80)")
+
+# Rule header khop ca hai chieu -> chung minh chinh buoc flow loai to_client
+rule_bidir = parse_rule('alert tcp any any <> any any '
+                        '(msg:"bidir"; flow:to_server,established; content:"admin"; sid:800003;)')
+r_bidir = match_rule(rule_bidir, resp, ctx_resp)
+print(f"  rule <> + to_server voi response: match={r_bidir['match']} stage={r_bidir['stage']} ({r_bidir['reason']})")
+check(not r_bidir["match"], "header khop ca 2 chieu nhung van NO MATCH")
+check(r_bidir["stage"] == "flow", "bi loai dung o buoc flow vi khong phai to_server")
 
 # Rule to_client phai khop chieu nguoc lai
 rule_client = parse_rule('alert tcp any 80 -> any any '

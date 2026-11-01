@@ -12,8 +12,11 @@ T08 - flow:to_server,established kiem chung bang Flow Tracker that
   [PASS] SYN chua established -> NO MATCH
   [PASS] SYN bi loai o buoc flow
   [PASS] response (to_client) -> NO MATCH
-  [FAIL] response bi loai o buoc flow
+  [PASS] response bi loai ngay o header (dst_port != 80)
+  rule <> + to_server voi response: match=False stage=flow (khong phai to_server)
+  [PASS] header khop ca 2 chieu nhung van NO MATCH
+  [PASS] bi loai dung o buoc flow vi khong phai to_server
   rule to_client voi response: match=True
   [PASS] rule to_client khop goi tra ve
 
-=== T08 FAILED (1 loi) ===
+=== T08 PASSED ===

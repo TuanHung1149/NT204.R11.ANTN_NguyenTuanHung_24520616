@@ -111,13 +111,21 @@ python3 main.py --pcap TEST/BT3/demo_bt3.pcap
 
 ## Sử dụng AI
 
-- **Công cụ:** Claude (Anthropic)
-- **Mục đích:** Tham khảo kiến thức, giải thích khái niệm, đưa ra lời khuyên về cách tiếp cận, gợi ý cấu trúc code
-- **Phần mã nguồn có sử dụng AI:**
+- **Công cụ:** Claude (Anthropic), qua Claude Code.
+- **Mục đích:** Hỏi kiến thức nền (cấu trúc IDS, cú pháp Snort rule, cách dùng Scapy), nhờ sinh mã
+  nguồn theo yêu cầu, rà soát lỗi và đề xuất test case.
+- **Cách làm việc:** Sinh viên mô tả yêu cầu theo đề bài → Claude sinh mã nguồn → sinh viên đọc hiểu,
+  chạy kiểm thử, yêu cầu sửa khi sai hoặc khi muốn đổi cách làm (ví dụ: yêu cầu bỏ bớt comment/docstring,
+  yêu cầu giữ code đơn giản, yêu cầu sửa lại cách lấy payload và cách đánh chỉ mục rule).
 
-| Bài | File | Mức độ sử dụng |
-|-----|------|----------------|
-| 1 | `capture.py`, `parsers.py`, `detectors.py`, `alert.py`, `main.py` | Gợi ý cấu trúc module và tham khảo cách dùng thư viện Scapy |
-| 2 | `decoder.py`, `preprocessor.py`, `flow_tracker.py` | Gợi ý cấu trúc, tham khảo thuật toán theo dõi trạng thái TCP và sliding window |
-| 3 | `rule_loader.py`, `rule_parser.py`, `rule_repository.py`, `rule_matcher.py`, `evaluation_engine.py`, `detection_event.py` | Gợi ý cấu trúc module, tham khảo cú pháp Snort rule và thuật toán so khớp content tương đối |
-| 1-3 | `TEST/` | Gợi ý các trường hợp kiểm thử cần bao phủ |
+**Phần mã nguồn có sử dụng AI:**
+
+| Bài | File | Mức độ |
+|-----|------|--------|
+| 1 | `capture.py`, `parsers.py`, `detectors.py`, `alert.py`, `main.py` | Claude sinh mã nguồn theo yêu cầu; sinh viên đọc hiểu, chạy thử và yêu cầu chỉnh sửa |
+| 2 | `decoder.py`, `preprocessor.py`, `flow_tracker.py` | Như trên |
+| 3 | `rule_loader.py`, `rule_parser.py`, `rule_repository.py`, `rule_matcher.py`, `evaluation_engine.py`, `detection_event.py` | Như trên |
+| 1-3 | `TEST/`, `TEST/BT3/` | Claude sinh script kiểm thử; sinh viên chạy và đối chiếu kết quả với đề bài |
+| - | `rules/community.rules` | Không do AI sinh — bộ rule Snort Community tải từ snort.org (xem `rules/COMMUNITY-RULES-LICENSE`) |
+
+Sinh viên chịu trách nhiệm về toàn bộ mã nguồn đã nộp và có thể giải thích cách hoạt động của từng module.

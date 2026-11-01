@@ -1,4 +1,4 @@
-from scapy.all import sniff, IP, TCP, UDP, Raw
+from scapy.all import sniff, IP, TCP, UDP, Raw, Padding
 
 
 def start_capture(interface=None, packet_callback=None, count=0, timeout=None, bpf_filter=None):
@@ -13,12 +13,31 @@ def start_capture(interface=None, packet_callback=None, count=0, timeout=None, b
     return packets
 
 
+def transport_payload(packet):
+    # Lay toan bo du lieu sau header TCP/UDP (ke ca lop da duoc scapy phan tich
+    # nhu DNS), bo phan padding cua khung Ethernet de dsize khong bi sai.
+    for proto in (TCP, UDP):
+        if not packet.haslayer(proto):
+            continue
+        payload = packet[proto].payload
+        if not payload or isinstance(payload, Padding):
+            return b""
+        raw = bytes(payload)
+        pad = payload.getlayer(Padding)
+        if pad is not None:
+            pad_len = len(bytes(pad))
+            if pad_len:
+                raw = raw[:-pad_len]
+        return raw
+    return b""
+
+
 def extract_packet_info(packet):
     if not packet.haslayer(IP):
         return None
 
     # payload = dữ liệu ứng dụng, dùng cho content/dsize matching ở bài 3
-    payload = bytes(packet[Raw].load) if packet.haslayer(Raw) else b""
+    payload = transport_payload(packet)
 
     info = {
         "src_ip": packet[IP].src,

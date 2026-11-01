@@ -1,6 +1,8 @@
 import time
 import hashlib
 
+APP_PROTOCOLS = ("HTTP", "DNS", "SMTP")
+
 
 def make_flow_id(src_ip, src_port, dst_ip, dst_port, protocol):
     # Sắp xếp 2 endpoint để A->B và B->A ra cùng 1 id
@@ -18,7 +20,7 @@ class Flow:
             event.get("dst_ip"), event.get("dst_port"), event.get("protocol"),
         )
         self.protocol = event.get("protocol")
-        self.application_protocol = event.get("type") if event.get("type") in ("HTTP", "DNS") else None
+        self.application_protocol = event.get("type") if event.get("type") in APP_PROTOCOLS else None
 
         # A = bên khởi tạo (gửi packet đầu tiên)
         self.endpoint_a = (event.get("src_ip"), event.get("src_port"))
@@ -48,6 +50,9 @@ class Flow:
 
     def update(self, event, now):
         self.last_seen = now
+        # Goi SYN chua co du lieu ung dung -> nhan dien o goi dau tien co payload
+        if self.application_protocol is None and event.get("type") in APP_PROTOCOLS:
+            self.application_protocol = event["type"]
         size = event.get("size", 0)
 
         self.packet_count += 1

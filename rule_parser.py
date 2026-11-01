@@ -87,6 +87,22 @@ def parse_content_pattern(raw):
     return bytes(out)
 
 
+def _split_list(spec):
+    # [80,8080] -> ["80","8080"] ; danh sach long nhau [[80,8080],3000] la phep
+    # hop trong Snort nen lam phang. Phu dinh tung phan tu chua ho tro.
+    if spec.startswith("[") and spec.endswith("]"):
+        inner = spec[1:-1].replace("[", "").replace("]", "")
+        items = [x.strip() for x in inner.split(",")]
+    else:
+        items = [spec.strip()]
+
+    items = [x for x in items if x]
+    for item in items:
+        if item.startswith("!"):
+            raise RuleUnsupported(f"phu dinh trong danh sach chua ho tro: {item}")
+    return items
+
+
 def parse_ip_spec(spec):
     spec = spec.strip()
     if spec.startswith("$"):
@@ -98,7 +114,7 @@ def parse_ip_spec(spec):
     if spec.lower() == "any":
         return {"any": True, "negate": negate, "nets": []}
 
-    items = spec[1:-1].split(",") if spec.startswith("[") and spec.endswith("]") else [spec]
+    items = _split_list(spec)
     nets = []
     for item in items:
         item = item.strip()
@@ -126,7 +142,7 @@ def parse_port_spec(spec):
     if spec.lower() == "any":
         return {"any": True, "negate": negate, "ranges": []}
 
-    items = spec[1:-1].split(",") if spec.startswith("[") and spec.endswith("]") else [spec]
+    items = _split_list(spec)
     ranges = []
     for item in items:
         item = item.strip()

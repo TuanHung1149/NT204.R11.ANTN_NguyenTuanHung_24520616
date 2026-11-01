@@ -1,0 +1,17 @@
+T13 - Mot event match dong thoi nhieu rule, khong dung o match dau tien
+
+  Tong rule: 7 | candidate: 5 | match: 4
+    sid=1301 Co chu GET content="GET"@0
+    sid=1302 Directory traversal content="../"@5
+    sid=1303 Tu mang noi bo
+    sid=1304 Goi PSH-ACK
+  [PASS] co it nhat 2 rule cung match
+  [PASS] dung 4 rule match (duoc [1301, 1302, 1303, 1304])
+  [PASS] rule sai port khong match
+  [PASS] rule sai protocol khong match
+  [PASS] rule content vang khong match
+  stats: {'events': 1, 'candidates': 5, 'matches': 4, 'rules_skipped': 2, 'valid': 7, 'invalid': 0, 'unsupported': 0, 'index_buckets': 4}
+  [PASS] dem dung 1 event da danh gia
+  [PASS] dem dung 4 lan match
+
+=== T13 PASSED ===

@@ -1,0 +1,19 @@
+T04 - Parse header TCP voi any / IP don / CIDR / port range
+  status=valid action=alert proto=tcp dir=->
+  src_ip={'any': False, 'negate': False, 'nets': [IPv4Network('192.168.1.10/32')]} src_port={'any': False, 'negate': False, 'ranges': [(1024, 65535)]}
+  dst_ip={'any': False, 'negate': False, 'nets': [IPv4Network('10.0.0.0/8')]} dst_port={'any': False, 'negate': False, 'ranges': [(80, 80)]}
+  [PASS] rule valid
+  [PASS] action/protocol dung
+  [PASS] direction dung
+  [PASS] sid/rev dung
+  [PASS] IP don -> /32
+  [PASS] CIDR giu nguyen prefix
+  [PASS] port '1024:' -> (1024,65535)
+  [PASS] port don -> (80,80)
+  any: src_ip={'any': True, 'negate': False, 'nets': []} dst_port={'any': True, 'negate': False, 'ranges': []}
+  [PASS] any duoc danh dau dung
+  list: src_port=[(80, 80), (8080, 8080)] dst_port=[(0, 1023)]
+  [PASS] danh sach port dung
+  [PASS] port ':1023' -> (0,1023)
+
+=== T04 PASSED ===

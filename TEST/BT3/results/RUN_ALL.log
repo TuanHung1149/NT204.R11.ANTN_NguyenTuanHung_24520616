@@ -1,0 +1,16 @@
+[OK]   T01 t01_rule_loader.py
+[OK]   T02 t02_invalid_rule.py
+[OK]   T03 t03_unsupported_rule.py
+[OK]   T04 t04_parse_header.py
+[OK]   T05 t05_direction.py
+[OK]   T06 t06_indexer.py
+[OK]   T07 t07_header_reject.py
+[OK]   T08 t08_flow_state.py
+[OK]   T09 t09_nocase.py
+[OK]   T10 t10_offset_depth.py
+[OK]   T11 t11_distance_within.py
+[OK]   T12 t12_flags_dsize.py
+[OK]   T13 t13_multi_match.py
+[OK]   T14 t14_detection_event.py
+
+14/14 test case PASSED: T01 T02 T03 T04 T05 T06 T07 T08 T09 T10 T11 T12 T13 T14

@@ -1,0 +1,61 @@
+T14 - Detection Event co du field theo muc 5 cua de bai
+  [PASS] sinh ra 1 detection event
+
+  Detection Event (JSON):
+{
+  "timestamp": "2025-10-09T15:53:20",
+  "sid": 100001,
+  "rev": 1,
+  "msg": "Directory traversal detected",
+  "classtype": "web-application-attack",
+  "priority": 1,
+  "protocol": "tcp",
+  "application_protocol": "HTTP",
+  "src_ip": "10.0.0.5",
+  "src_port": 52133,
+  "dst_ip": "10.0.0.9",
+  "dst_port": 80,
+  "flow_id": "F123",
+  "flow_state": "ESTABLISHED",
+  "match_info": [
+    {
+      "content": "../",
+      "offset": 5,
+      "matched": "../",
+      "nocase": false,
+      "field": "payload"
+    }
+  ]
+}
+  [PASS] co field 'timestamp'
+  [PASS] co field 'sid'
+  [PASS] co field 'rev'
+  [PASS] co field 'msg'
+  [PASS] co field 'priority'
+  [PASS] co field 'classtype'
+  [PASS] co field 'src_ip'
+  [PASS] co field 'src_port'
+  [PASS] co field 'dst_ip'
+  [PASS] co field 'dst_port'
+  [PASS] co field 'protocol'
+  [PASS] co field 'application_protocol'
+  [PASS] co field 'flow_id'
+  [PASS] co field 'match_info'
+  [PASS] sid/rev dung
+  [PASS] msg dung
+  [PASS] priority/classtype dung
+  [PASS] 5-tuple: nguon dung
+  [PASS] 5-tuple: dich dung
+  [PASS] protocol dung
+  [PASS] application_protocol dung
+  [PASS] flow_id dung
+  [PASS] match info co content da khop
+  [PASS] match info co vi tri khop
+  [PASS] serialize JSON duoc (san sang cho Alert/Logging)
+
+  Dang hien thi:
+[100001:1] Directory traversal detected [priority:1] [web-application-attack]
+  TCP 10.0.0.5:52133 -> 10.0.0.9:80 | app=HTTP | flow=F123 (ESTABLISHED)
+  matched content="../" @offset=5
+
+=== T14 PASSED ===

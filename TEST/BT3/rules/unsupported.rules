@@ -1,0 +1,7 @@
+# Rule dung keyword ngoai pham vi - dung cho test case 03
+alert tcp any any -> any 80 (msg:"Dung pcre"; pcre:"/admin/i"; sid:900201; rev:1;)
+alert tcp any any -> any 80 (msg:"Dung byte_test"; byte_test:4,>,100,0; sid:900202; rev:1;)
+alert tcp any any -> any 80 (msg:"Dung flowbits"; flowbits:set,x; sid:900203; rev:1;)
+drop tcp any any -> any 80 (msg:"Action drop"; sid:900204; rev:1;)
+alert icmp any any -> any any (msg:"Protocol icmp"; sid:900205; rev:1;)
+alert tcp any any -> any 80 (msg:"Rule hop le van nap duoc"; content:"ok"; sid:900206; rev:1;)

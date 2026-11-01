@@ -1,0 +1,8 @@
+# File rule co comment va dong trong - dung cho test case 01
+
+alert tcp any any -> any 80 (msg:"Rule hop le 1"; content:"GET"; sid:900001; rev:1;)
+
+# Mot comment nua
+alert udp any any -> any 53 (msg:"Rule hop le 2"; content:"test"; sid:900002; rev:1;)
+
+alert tcp any any -> any 443 (msg:"Rule hop le 3"; sid:900003; rev:1;)

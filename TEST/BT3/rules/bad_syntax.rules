@@ -1,0 +1,8 @@
+# Rule sai cu phap - dung cho test case 02
+alert tcp any any -> any 80 (msg:"Rule tot"; content:"OK"; sid:900101; rev:1;)
+alert tcp any -> any 80 (msg:"Thieu phan header"; sid:900102;)
+alert tcp any any -> any 80 (msg:"Thieu sid";)
+alert tcp any any -> any 80 (msg:"Sid khong phai so"; sid:abc;)
+alert tcp any any -> any 99999 (msg:"Port ngoai pham vi"; sid:900103;)
+alert tcp any any -> any 80 (msg:"Modifier mo coi"; nocase; sid:900104;)
+alert tcp any any -> any 80 (msg:"Van chay tiep"; content:"END"; sid:900105; rev:1;)

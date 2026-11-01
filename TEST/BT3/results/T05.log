@@ -1,0 +1,12 @@
+T05 - Direction -> chi mot chieu, <> ca hai chieu
+  rule '->' voi A->B : MATCH
+  rule '->' voi B->A : NO MATCH (khong khop IP/port/huong)
+  rule '<>' voi A->B : MATCH
+  rule '<>' voi B->A : MATCH
+  [PASS] '->' khop chieu thuan A->B
+  [PASS] '->' KHONG khop chieu nguoc B->A
+  [PASS] '<>' khop chieu A->B
+  [PASS] '<>' khop ca chieu nguoc B->A
+  [PASS] chieu sai bi loai ngay o buoc header
+
+=== T05 PASSED ===

@@ -7,6 +7,8 @@ from detectors import PortScanDetector, BruteForceDetector, DNSAnomalyDetector, 
 from decoder import decode_event
 from preprocessor import preprocess
 from flow_tracker import FlowTracker
+from evaluation_engine import build_engine
+from detection_event import format_detection_event
 from alert import RESET
 
 port_scan = PortScanDetector()
@@ -14,8 +16,10 @@ brute_force = BruteForceDetector()
 dns_anomaly = DNSAnomalyDetector()
 syn_flood = SYNFloodDetector()
 flow_tracker = FlowTracker()
+engine = build_engine()
 
 packet_count = 0
+detection_count = 0
 
 
 def process_packet(packet):
@@ -48,11 +52,43 @@ def process_packet(packet):
             event["path"] = parsed["path"]
         if "headers" in parsed:
             event["headers"] = parsed["headers"]
+        if parsed["type"] == "DNS":
+            event["app_data"] = " ".join(q["name"] for q in parsed.get("queries", []))
 
     event = decode_event(event)
+    # URI da giai ma (bai 2) cung duoc dem di so khop content
+    if event.get("decoded_path"):
+        event["app_data"] = event["decoded_path"]
     event = preprocess(event)
-    if event.get("processing_action") != "drop":
-        flow_tracker.process(event)
+    if event.get("processing_action") == "drop":
+        return
+
+    flow = flow_tracker.process(event, now=event.get("timestamp"))
+
+    # Bai 3: flow context -> Core Engine -> Detection Event
+    flow_ctx = {
+        "flow_id": flow.flow_id,
+        "state": flow.state,
+        "to_server": flow.direction(event) == "forward",
+        "established": flow.state in ("ESTABLISHED", "CLOSING"),
+        "application_protocol": flow.application_protocol,
+    }
+
+    global detection_count
+    for detection in engine.evaluate(event, flow_ctx):
+        detection_count += 1
+        print(format_detection_event(detection))
+
+
+def print_engine_summary():
+    report = engine.report()
+    print(f"\n{'=' * 60}")
+    print(f"  CORE ENGINE - {detection_count} detection event")
+    print("=" * 60)
+    print(f"  rule: {report['valid']} valid / {report['invalid']} invalid / {report['unsupported']} unsupported")
+    print(f"  event danh gia : {report['events']}")
+    print(f"  candidate rule : {report['candidates']} (bo qua nho index: {report['rules_skipped']})")
+    print(f"  so lan match   : {report['matches']}")
 
 
 def print_flow_summary():
@@ -82,6 +118,7 @@ def main():
             process_packet(pkt)
         print(f"\nXong. Đã xử lý {packet_count} gói tin.")
         print_flow_summary()
+        print_engine_summary()
         return
 
     # Chế độ live capture
@@ -93,7 +130,8 @@ def main():
     print("=" * 60)
     print(f"  Interface : {interface or 'mặc định'}")
     print(f"  Filter    : {bpf_filter or 'không'}")
-    print(f"  Pipeline  : Capture -> Decoder -> Preprocessor -> Flow Tracker")
+    print(f"  Pipeline  : Capture -> Decoder -> Preprocessor -> Flow Tracker -> Core Engine")
+    print(f"  Rule      : {engine.repository.stats()['valid']} rule da nap")
     print(f"  Detector  : Port Scan, Brute Force, DNS Anomaly, SYN Flood")
     print("=" * 60)
     print("Đang lắng nghe... (Ctrl+C để dừng)\n")
@@ -101,6 +139,7 @@ def main():
     def on_exit(s, f):
         print(f"\n\nDừng. Đã xử lý {packet_count} gói tin.{RESET}")
         print_flow_summary()
+        print_engine_summary()
         sys.exit(0)
 
     signal.signal(signal.SIGINT, on_exit)

@@ -11,6 +11,16 @@ def _timestamp(event):
         return str(ts)
 
 
+APP_PROTOCOLS = {"HTTP", "DNS", "SMTP"}
+
+
+def _app_protocol(event, flow_ctx):
+    kind = event.get("type")
+    if kind in APP_PROTOCOLS:
+        return kind
+    return flow_ctx.get("application_protocol")
+
+
 def create_detection_event(rule, event, match_result, flow_ctx=None):
     flow_ctx = flow_ctx or {}
     return {
@@ -21,7 +31,7 @@ def create_detection_event(rule, event, match_result, flow_ctx=None):
         "classtype": rule.get("classtype"),
         "priority": rule.get("priority"),
         "protocol": str(event.get("protocol", "")).lower(),
-        "application_protocol": event.get("type") or flow_ctx.get("application_protocol"),
+        "application_protocol": _app_protocol(event, flow_ctx),
         "src_ip": event.get("src_ip"),
         "src_port": event.get("src_port"),
         "dst_ip": event.get("dst_ip"),

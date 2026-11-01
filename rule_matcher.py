@@ -166,19 +166,33 @@ def _match_contents(contents, i, payload, prev_end, found):
         search_from = pos + 1
 
 
+def _as_bytes(value):
+    if isinstance(value, bytes):
+        return value
+    if isinstance(value, str):
+        return value.encode("utf-8", errors="replace")
+    return b""
+
+
 def match_content(rule, event):
     contents = rule.get("contents") or []
     if not contents:
         return True, None, []
 
-    payload = event.get("payload") or b""
-    if isinstance(payload, str):
-        payload = payload.encode("utf-8", errors="replace")
+    # Tim trong payload tho; neu khong co thi tim trong du lieu ung dung da
+    # parse/decode (DNS qname, URI da giai ma) theo muc 4.4 cua de bai.
+    buffers = [("payload", _as_bytes(event.get("payload"))),
+               ("app_data", _as_bytes(event.get("app_data")))]
 
-    found = []
-    if _match_contents(contents, 0, payload, 0, found):
-        return True, None, found
-    return False, "khong tim thay content trong payload", []
+    for name, buf in buffers:
+        if not buf:
+            continue
+        found = []
+        if _match_contents(contents, 0, buf, 0, found):
+            for item in found:
+                item["field"] = name
+            return True, None, found
+    return False, "khong tim thay content trong payload/app_data", []
 
 
 def match_rule(rule, event, flow_ctx=None):

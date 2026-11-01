@@ -1,0 +1,36 @@
+T19 - Cac truong hop bien khi phan tich rule
+
+  [Header]
+  [PASS] phu dinh ben trong danh sach IP -> unsupported
+  [PASS] phu dinh ben trong danh sach port -> unsupported
+  [PASS] bien IP chua dinh nghia -> invalid
+  [PASS] bien port chua dinh nghia -> invalid
+  [PASS] huong '<-' khong hop le -> invalid
+  [PASS] danh sach IP rong -> invalid
+  [PASS] danh sach port rong -> invalid
+  [PASS] port khong phai so -> invalid
+  [PASS] danh sach co 'any' van hop le
+  [PASS] danh sach IP co 'any' -> any
+  [PASS] danh sach port co 'any' -> any
+
+  [Content]
+  [PASS] content khong dat trong dau nhay -> invalid
+  [PASS] content thieu dau nhay dong -> invalid
+  [PASS] tham so kieu Snort3 sau dau nhay -> unsupported
+  [PASS] content phu dinh -> unsupported
+  [PASS] escape dau nhay trong content
+  [PASS] escape dau cham phay trong content
+  [PASS] escape dau gach cheo nguoc
+
+  [Options]
+  [PASS] option cuoi khong co dau ';'
+  [PASS] tach option khi thieu ';' cuoi
+  [PASS] flow co phan tu rong van doc duoc
+  [PASS] doc dung ca 2 gia tri flow
+  [PASS] from_client dong nghia to_server
+  [PASS] from_server dong nghia to_client
+
+  [Parsers]
+  [PASS] payload HTTP rong -> None
+
+=== T19 PASSED ===

@@ -1,0 +1,21 @@
+T07 - Header khong khop thi loai truoc khi so khop content
+  sai port dich    -> match=False stage=header (khong khop IP/port/huong)
+  [PASS] sai port dich: khong match
+  [PASS] sai port dich: dung lai o buoc header
+  [PASS] sai port dich: khong co ket qua content
+  sai IP nguon     -> match=False stage=header (khong khop IP/port/huong)
+  [PASS] sai IP nguon: khong match
+  [PASS] sai IP nguon: dung lai o buoc header
+  [PASS] sai IP nguon: khong co ket qua content
+  sai protocol     -> match=False stage=header (protocol tcp != udp)
+  [PASS] sai protocol: khong match
+  [PASS] sai protocol: dung lai o buoc header
+  [PASS] sai protocol: khong co ket qua content
+  sai CIDR dich    -> match=False stage=header (khong khop IP/port/huong)
+  [PASS] sai CIDR dich: khong match
+  [PASS] sai CIDR dich: dung lai o buoc header
+  [PASS] sai CIDR dich: khong co ket qua content
+  header dung      -> match=True content=[{'content': 'admin', 'offset': 5, 'matched': 'admin', 'nocase': False, 'field': 'payload'}]
+  [PASS] header dung thi content moi duoc so khop
+
+=== T07 PASSED ===

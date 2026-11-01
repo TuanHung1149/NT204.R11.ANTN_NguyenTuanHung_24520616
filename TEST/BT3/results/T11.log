@@ -1,0 +1,24 @@
+T11 - distance/within so khop tuong doi giua hai content
+
+  [1] payload: cmd.exe /c dir
+      cmd.exe + /c distance:0 within:5 -> MATCH
+  [PASS] '/c' nam ngay sau cmd.exe -> match
+      cmd.exe + dir distance:0 within:3 -> NO
+  [PASS] 'dir' cach qua xa, ngoai within:3 -> khong match
+      cmd.exe + dir distance:4 within:3 -> MATCH
+  [PASS] distance:4 bo qua ' /c ' -> match duoc dir
+
+  [2] payload: /c cmd.exe  (thu tu dao nguoc)
+      cmd.exe roi moi /c -> NO
+  [PASS] '/c' nam truoc cmd.exe -> khong thoa relative matching
+
+  [3] payload: cmd.exe ........................ cmd.exe /c dir
+      'cmd.exe' o vi tri 0 va 33
+      -> MATCH [('cmd.exe', 33), ('/c', 41)]
+  [PASS] quay lui sang 'cmd.exe' thu 2 de tim duoc '/c'
+  [PASS] chon dung cap vi tri thoa dieu kien
+
+      chi within:5 (khong distance) -> MATCH
+  [PASS] within khong kem distance van hoat dong
+
+=== T11 PASSED ===

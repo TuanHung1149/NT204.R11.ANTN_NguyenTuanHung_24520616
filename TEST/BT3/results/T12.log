@@ -1,0 +1,54 @@
+T12 - So khop TCP flags va dsize
+
+  [flags] event co flags=PA
+      flags:PA;      -> MATCH
+  [PASS] khop chinh xac PA
+      flags:AP;      -> MATCH
+  [PASS] thu tu chu khong quan trong (AP = PA)
+      flags:A;       -> NO   
+  [PASS] khop chinh xac 'A' that bai vi con co P
+      flags:+A;      -> MATCH
+  [PASS] '+' nghia la chua A
+      flags:+PA;     -> MATCH
+  [PASS] '+' chua ca P va A
+      flags:*FS;     -> NO   
+  [PASS] '*' bat ky trong F,S -> khong co
+      flags:*PF;     -> MATCH
+  [PASS] '*' bat ky trong P,F -> co P
+      flags:!R;      -> MATCH
+  [PASS] '!' khong duoc co R
+      flags:!P;      -> NO   
+  [PASS] '!' khong duoc co P nhung lai co
+      flags:S;       -> NO   
+  [PASS] goi nay khong phai SYN
+
+  [dsize] event co dsize=150
+      dsize:150;         -> MATCH
+  [PASS] bang dung 150
+      dsize:100;         -> NO   
+  [PASS] khac 100
+      dsize:>100;        -> MATCH
+  [PASS] lon hon 100
+      dsize:>150;        -> NO   
+  [PASS] khong lon hon chinh no
+      dsize:<200;        -> MATCH
+  [PASS] nho hon 200
+      dsize:<150;        -> NO   
+  [PASS] khong nho hon chinh no
+      dsize:>=150;       -> MATCH
+  [PASS] lon hon hoac bang 150
+      dsize:<=150;       -> MATCH
+  [PASS] nho hon hoac bang 150
+      dsize:100<>200;    -> MATCH
+  [PASS] nam trong khoang 100-200
+      dsize:10<>100;     -> NO   
+  [PASS] ngoai khoang 10-100
+      dsize:150<>200;    -> MATCH
+  [PASS] bien duoi tinh la nam trong (inclusive)
+
+  goi SYN rong (flags:S; dsize:0) -> MATCH
+  [PASS] goi SYN khong payload khop flags:S va dsize:0
+  [PASS] goi SYN rong khong khop dsize:>0
+  [PASS] bi loai dung o buoc dsize
+
+=== T12 PASSED ===

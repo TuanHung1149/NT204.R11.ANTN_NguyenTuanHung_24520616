@@ -27,7 +27,13 @@ detection_count = 0
 def process_packet(packet):
     global packet_count
     packet_count += 1
+    try:
+        handle_packet(packet)
+    except Exception as e:
+        print(f"[!] Bo qua goi {packet_count}: {type(e).__name__}: {e}")
 
+
+def handle_packet(packet):
     info = extract_packet_info(packet)
     if not info:
         return

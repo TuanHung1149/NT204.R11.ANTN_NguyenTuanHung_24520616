@@ -1,0 +1,65 @@
+T16 - End-to-end: file pcap -> ca day chuyen -> Detection Event
+
+  goi doc duoc : 13
+  goi bo qua   : [(1, 'khong phai goi IP')]
+  detection    : 28
+  [PASS] xu ly du 13 goi
+  [PASS] co sinh detection event
+  [PASS] dung 1 goi bi bo qua
+  [PASS] goi ARP bi bo qua dung ly do
+  [PASS] goi hong duoc ghi nhan la bo qua
+  [PASS] goi hong khong sinh detection
+  [PASS] pipeline van chay binh thuong sau goi hong
+  sau goi hong : skipped=(14, 'ValueError: goi hong co chu y')
+
+  ACK co padding: dsize=0 (size goi=60)
+  [PASS] padding Ethernet khong bi tinh vao dsize
+
+  sid 100001 khop 2 lan, tim thay trong: ['app_data', 'payload']
+  [PASS] bat duoc ca 2 goi traversal
+  [PASS] ban tho khop trong payload
+  [PASS] ban ma hoa khop trong app_data (nho Decoder bai 2)
+  [PASS] content khop la '../'
+  [PASS] bat duoc 1 goi SQL injection
+  [PASS] nocase khop chu thuong
+  sid 100002 khop: 'union select'
+  [PASS] bat duoc 1 goi payload lon (dsize>100)
+  [PASS] bat duoc 1 DNS query xau
+  [PASS] detection DNS la UDP
+  [PASS] nhan dien application_protocol = DNS
+  sid 100007: udp/DNS
+
+  so flow: 3
+    tcp/-    10.0.0.7:60000<->10.0.0.9:8080 state=HANDSHAKE pkt=1
+    udp/DNS  10.0.0.5:33333<->8.8.8.8:53 state=ACTIVE pkt=2
+    tcp/HTTP 10.0.0.5:51000<->10.0.0.9:80 state=CLOSED pkt=9
+  [PASS] tach dung 3 flow rieng biet
+  [PASS] flow TCP ket thuc o trang thai CLOSED
+  [PASS] flow TCP nhan dien duoc HTTP
+  [PASS] dem du 9 goi trong flow (duoc 9)
+  [PASS] dem dung hai chieu
+  [PASS] dem dung co SYN/FIN
+  [PASS] flow DNS co 2 goi
+  [PASS] DNS query va response cung 1 flow
+  [PASS] detection co field 'timestamp'
+  [PASS] detection co field 'sid'
+  [PASS] detection co field 'rev'
+  [PASS] detection co field 'msg'
+  [PASS] detection co field 'priority'
+  [PASS] detection co field 'classtype'
+  [PASS] detection co field 'src_ip'
+  [PASS] detection co field 'src_port'
+  [PASS] detection co field 'dst_ip'
+  [PASS] detection co field 'dst_port'
+  [PASS] detection co field 'protocol'
+  [PASS] detection co field 'flow_id'
+  [PASS] detection co field 'match_info'
+  [PASS] flow_id trong detection khop flow that
+  [PASS] toan bo detection serialize JSON duoc
+
+  report: {'events': 13, 'candidates': 90, 'matches': 31, 'rules_skipped': 27, 'valid': 9, 'invalid': 0, 'unsupported': 0, 'index_buckets': 4, 'packets': 15, 'skipped': 2, 'detections': 31}
+  [PASS] so lan match khop so detection
+  [PASS] candidate luon >= so match
+  [PASS] rule nap sach
+
+=== T16 PASSED ===

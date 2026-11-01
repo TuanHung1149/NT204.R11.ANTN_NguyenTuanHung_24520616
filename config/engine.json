@@ -2,10 +2,28 @@
   "variables": {
     "HOME_NET": "10.0.0.0/8",
     "EXTERNAL_NET": "any",
-    "HTTP_PORTS": "[80,8080]"
+    "HTTP_SERVERS": "10.0.0.0/8",
+    "SQL_SERVERS": "10.0.0.0/8",
+    "SMTP_SERVERS": "10.0.0.0/8",
+    "DNS_SERVERS": "10.0.0.0/8",
+    "TELNET_SERVERS": "10.0.0.0/8",
+    "FTP_SERVERS": "10.0.0.0/8",
+    "SSH_SERVERS": "10.0.0.0/8",
+    "AIM_SERVERS": "any",
+    "HTTP_PORTS": "[80,8080]",
+    "SHELLCODE_PORTS": "any",
+    "ORACLE_PORTS": "1521",
+    "SSH_PORTS": "22",
+    "FTP_PORTS": "21",
+    "SIP_PORTS": "[5060,5061]",
+    "FILE_DATA_PORTS": "[80,8080,110,143]",
+    "GTP_PORTS": "[2123,2152,3386]"
   },
   "rule_files": [
-    {"path": "rules/local.rules", "enabled": true}
+    {
+      "path": "rules/local.rules",
+      "enabled": true
+    }
   ],
   "disabled_sids": []
 }

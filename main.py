@@ -82,6 +82,27 @@ def process_packet(packet):
         print(format_detection_event(detection))
 
 
+LOAD_LOG = os.path.join(BASE_DIR, "logs", "rule_load.log")
+
+
+def print_load_warnings(limit=20):
+    # Muc 4.1: loi mot rule khong lam dung viec nap, nhung phai bao ra
+    warnings = engine.warnings
+    if not warnings:
+        return
+
+    os.makedirs(os.path.dirname(LOAD_LOG), exist_ok=True)
+    with open(LOAD_LOG, "w", encoding="utf-8") as f:
+        f.write("\n".join(warnings) + "\n")
+
+    print(f"[!] {len(warnings)} canh bao khi nap rule:")
+    for w in warnings[:limit]:
+        print(f"    - {w}")
+    if len(warnings) > limit:
+        print(f"    ... con {len(warnings) - limit} canh bao nua (xem {LOAD_LOG})")
+    print()
+
+
 def print_engine_summary():
     report = engine.report()
     print(f"\n{'=' * 60}")
@@ -115,6 +136,7 @@ def main():
     if len(sys.argv) >= 3 and sys.argv[1] == "--pcap":
         pcap_file = sys.argv[2]
         print(f"Đọc file: {pcap_file}\n")
+        print_load_warnings()
         packets = rdpcap(pcap_file)
         for pkt in packets:
             process_packet(pkt)
@@ -137,6 +159,7 @@ def main():
     print(f"  Detector  : Port Scan, Brute Force, DNS Anomaly, SYN Flood")
     print("=" * 60)
     print("Đang lắng nghe... (Ctrl+C để dừng)\n")
+    print_load_warnings()
 
     def on_exit(s, f):
         print(f"\n\nDừng. Đã xử lý {packet_count} gói tin.{RESET}")

@@ -1,0 +1,14 @@
+T09 - content co nocase thi khong phan biet hoa thuong
+  payload: user=a' UnIoN SeLeCt 1,2,3-- FROM users
+  content:"union select"; nocase  -> MATCH
+  content:"union select"          -> NO MATCH
+  content:"UnIoN SeLeCt"          -> MATCH
+  [PASS] co nocase -> match du khac hoa thuong
+  [PASS] khong nocase -> KHONG match khi khac hoa thuong
+  [PASS] truot o buoc content
+  [PASS] khong nocase nhung dung hoa thuong -> match
+  [PASS] offset dung (=8)
+  [PASS] tra ve doan khop nguyen ban goc
+  doan khop: 'UnIoN SeLeCt' @offset=8
+
+=== T09 PASSED ===

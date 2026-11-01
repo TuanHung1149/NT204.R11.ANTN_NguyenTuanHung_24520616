@@ -1,0 +1,18 @@
+T03 - Keyword ngoai pham vi bi danh dau unsupported, khong crash
+  unsupported  -                                keyword 'pcre' ngoai pham vi
+  unsupported  -                                keyword 'byte_test' ngoai pham vi
+  unsupported  -                                keyword 'flowbits' ngoai pham vi
+  unsupported  -                                action 'drop' khong ho tro
+  unsupported  -                                protocol 'icmp' khong ho tro
+  valid        Rule hop le van nap duoc         
+  [PASS] co 5 rule unsupported (thuc te 5)
+  [PASS] moi rule unsupported deu co ly do
+  [PASS] bat duoc pcre
+  [PASS] bat duoc byte_test
+  [PASS] bat duoc flowbits
+  [PASS] bat duoc action drop
+  [PASS] bat duoc protocol icmp
+  [PASS] rule hop le con lai van nap duoc
+  [PASS] repository khong danh gia rule unsupported
+
+=== T03 PASSED ===

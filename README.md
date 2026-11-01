@@ -98,10 +98,31 @@ python3 test_decoder.py        # T01-T04
 python3 test_preprocessor.py   # T05, T06, T14
 python3 test_flow_tracker.py   # T07-T13
 
-# Bài 3 - chạy cả 14 test case
+# Bài 3 - chạy cả 19 test case
 cd TEST/BT3
 python3 run_all.py
 ```
+
+**Test bài 3 gồm:**
+
+| Nhóm | Case | Nội dung |
+|---|---|---|
+| Bắt buộc theo đề | T01-T14 | Loader, parser, indexer, matching, detection event |
+| Mở rộng | T15 | Nạp bộ rule Snort community thật (568 rule) |
+| Mở rộng | T16 | **End-to-end**: pcap → cả dây chuyền → Detection Event |
+| Mở rộng | T17 | Chạy `main.py` thật bằng dòng lệnh |
+| Mở rộng | T18-T19 | Các nhánh xử lý lỗi và trường hợp biên |
+
+**Độ bao phủ mã nguồn: 95%** (xem `TEST/BT3/results/COVERAGE.log`). Đo lại bằng:
+
+```bash
+pip install coverage
+cd TEST/BT3 && python3 -m coverage run --source=../.. --omit='*/TEST/*' -a run_all.py
+python3 -m coverage report -m
+```
+
+Phần chưa bao phủ là hàm bắt gói trực tiếp từ card mạng (`start_capture`) — môi trường
+không có interface hoạt động nên chỉ kiểm thử gián tiếp qua chế độ `--pcap`.
 
 ## Demo
 

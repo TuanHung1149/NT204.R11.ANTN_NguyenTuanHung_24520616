@@ -1,0 +1,27 @@
+Name                   Stmts   Miss  Cover   Missing
+----------------------------------------------------
+alert.py                  32      0   100%
+capture.py                34      5    85%   5-13, 28-30
+decoder.py                67      8    88%   12-13, 20-21, 28-29, 44-45
+detection_event.py        31      3    90%   7, 10-11
+detectors.py              96      4    96%   16, 54, 119-124
+evaluation_engine.py      34      2    94%   40, 42
+flow_tracker.py          112      3    97%   135, 158, 172
+main.py                  102     22    78%   46, 56, 101-123
+parsers.py                81      7    91%   57-58, 67, 74-75, 90-91
+pipeline.py               64      2    97%   66-67
+preprocessor.py           66      0   100%
+rule_loader.py            43      4    91%   24-25, 56-57
+rule_matcher.py          149      0   100%
+rule_parser.py           244      6    98%   122, 140, 150, 328-330
+rule_repository.py        59      0   100%
+----------------------------------------------------
+TOTAL                   1214     66    95%
+
+Ghi chu ve cac dong chua duoc chay:
+- capture.py 5-13 va main.py 101-123: ham start_capture() va nhanh bat goi
+  truc tiep tu card mang. Moi truong WSL khong co interface hoat dong nen
+  khong chay tu dong duoc; da kiem thu gian tiep qua che do --pcap.
+- decoder.py 12-13/20-21/28-29/44-45 va parsers.py 57-58/74-75/90-91:
+  cac nhanh 'except' phong thu. Ham chuan cua Python (unquote, html.unescape,
+  decode(errors="ignore")) khong nem loi nen khong kich hoat duoc.

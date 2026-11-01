@@ -23,6 +23,10 @@
     {
       "path": "rules/local.rules",
       "enabled": true
+    },
+    {
+      "path": "rules/community.rules",
+      "enabled": false
     }
   ],
   "disabled_sids": []

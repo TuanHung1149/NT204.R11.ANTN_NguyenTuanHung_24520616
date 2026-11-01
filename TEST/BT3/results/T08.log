@@ -1,0 +1,19 @@
+T08 - flow:to_server,established kiem chung bang Flow Tracker that
+  SYN       state=HANDSHAKE    to_server=True established=False
+  SYN/ACK   state=HANDSHAKE    to_server=False established=False
+  ACK       state=ESTABLISHED  to_server=True established=True
+  request   state=ESTABLISHED  to_server=True established=True
+  response  state=ESTABLISHED  to_server=False established=True
+  rule voi SYN      : match=False stage=flow (flow chua established)
+  rule voi request  : match=True
+  rule voi response : match=False stage=header (khong khop IP/port/huong)
+  [PASS] bat tay 3 buoc -> ESTABLISHED
+  [PASS] request to_server + established -> MATCH
+  [PASS] SYN chua established -> NO MATCH
+  [PASS] SYN bi loai o buoc flow
+  [PASS] response (to_client) -> NO MATCH
+  [FAIL] response bi loai o buoc flow
+  rule to_client voi response: match=True
+  [PASS] rule to_client khop goi tra ve
+
+=== T08 FAILED (1 loi) ===

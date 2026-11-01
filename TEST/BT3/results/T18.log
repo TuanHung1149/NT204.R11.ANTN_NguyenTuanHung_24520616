@@ -1,0 +1,62 @@
+T18 - Cac nhanh xu ly loi va truong hop bien (yeu cau 'khong crash')
+
+  [Decoder]
+  [PASS] form-urlencoded: '+' thanh khoang trang
+  [PASS] base64 hong -> bao error, khong crash
+  [PASS] encoding la khong biet -> tra ve nguyen ban
+  [PASS] decode_bytes nhan san chuoi
+  [PASS] quoted-printable nhan bytes
+  [PASS] giai ma duong dan HTTP
+  [PASS] giai ma body MIME theo header
+  [PASS] co ghi trang thai giai ma
+
+  [Parsers]
+  [PASS] parse_tcp voi goi UDP -> None
+  [PASS] parse_udp voi goi TCP -> None
+  [PASS] parse_dns voi goi khong co DNS -> None
+  [PASS] parse_http voi port khong phai HTTP -> None
+  [PASS] payload khong phai HTTP -> None, khong crash
+  [PASS] goi ICMP -> None
+  [PASS] nhan dien DNS response
+  [PASS] doc duoc phan tra loi DNS
+
+  [Preprocessor]
+  [PASS] src_port ngoai pham vi -> partial
+  [PASS] dst_port am -> partial
+  [PASS] src_ip sai dinh dang -> partial
+  [PASS] dst_ip sai dinh dang -> partial
+  [PASS] protocol la khong biet -> partial
+  [PASS] input None -> drop, khong crash
+  [PASS] input sai kieu -> invalid
+  [PASS] headers None -> dict rong
+
+  [Matcher]
+  [PASS] IP trong event sai dinh dang -> khong match, khong crash
+  [PASS] event khong co port van khop rule 'any'
+  [PASS] event khong co port -> khong khop rule yeu cau port 80
+  [PASS] phu dinh IP: loai dung
+  [PASS] phu dinh IP: cho qua dung
+  [PASS] to_client voi goi to_server -> loai
+  [PASS] not_established voi flow da mo -> loai
+  [PASS] rule can flow nhung khong co context -> loai
+  [PASS] cua so tim rong -> tra -1
+
+  [Rule parser]
+  [PASS] byte hex khong hop le -> invalid
+  [PASS] khoi hex thieu dau -> invalid
+  [PASS] content thieu gia tri -> invalid
+  [PASS] flags thieu gia tri -> invalid
+  [PASS] flags ky tu la -> invalid
+  [PASS] dsize thieu gia tri -> invalid
+  [PASS] depth khong phai so -> invalid
+  [PASS] thieu dau ngoac -> invalid
+  [PASS] IP ngoai pham vi -> invalid
+  [PASS] port range nguoc -> invalid
+  [PASS] danh sach port rong -> invalid
+  [PASS] dsize sai dinh dang -> khong match, khong crash
+
+  [Pipeline]
+  [PASS] goi ICMP khong sinh detection
+  [PASS] goi khong co lop IP -> None
+
+=== T18 PASSED ===

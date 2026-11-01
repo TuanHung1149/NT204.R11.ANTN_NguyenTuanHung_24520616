@@ -1,0 +1,23 @@
+# Bo rule cuc bo cho Core Engine - NT204
+# Cu phap Snort: action proto src_ip src_port -> dst_ip dst_port (options)
+
+# --- Web attack ---
+alert tcp $EXTERNAL_NET any -> $HOME_NET $HTTP_PORTS (msg:"Directory traversal detected"; flow:to_server,established; content:"../"; classtype:web-application-attack; priority:1; sid:100001; rev:1;)
+alert tcp any any -> $HOME_NET $HTTP_PORTS (msg:"SQL injection attempt"; flow:to_server,established; content:"UNION SELECT"; nocase; classtype:web-application-attack; priority:1; sid:100002; rev:1;)
+
+# --- Kiem tra vi tri content ---
+alert tcp any any -> any $HTTP_PORTS (msg:"HTTP GET request"; content:"GET"; offset:0; depth:3; classtype:protocol-command-decode; priority:3; sid:100003; rev:1;)
+alert tcp any any -> any $HTTP_PORTS (msg:"Windows shell command"; content:"cmd.exe"; nocase; content:"/c"; distance:0; within:20; classtype:attempted-admin; priority:1; sid:100004; rev:1;)
+
+# --- Packet / TCP ---
+alert tcp any any -> any any (msg:"Large data packet"; flags:PA; dsize:>100; classtype:misc-activity; priority:3; sid:100005; rev:1;)
+alert tcp any any -> $HOME_NET 1:1024 (msg:"SYN to privileged port"; flags:S; classtype:attempted-recon; priority:2; sid:100006; rev:1;)
+
+# --- UDP / DNS ---
+alert udp any any -> any 53 (msg:"Suspicious DNS query"; content:"evil"; nocase; classtype:bad-unknown; priority:2; sid:100007; rev:1;)
+
+# --- Bidirectional ---
+alert tcp $HOME_NET $HTTP_PORTS <> any any (msg:"HTTP traffic both directions"; classtype:misc-activity; priority:3; sid:100008; rev:1;)
+
+# --- CIDR source ---
+alert tcp 10.0.0.0/8 any -> any any (msg:"Traffic from internal network"; classtype:misc-activity; priority:3; sid:100009; rev:1;)

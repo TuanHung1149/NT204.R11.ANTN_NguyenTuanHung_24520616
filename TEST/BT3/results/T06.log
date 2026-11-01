@@ -1,0 +1,18 @@
+T06 - Indexer tra dung tap candidate theo protocol/port
+  tong rule: 6 | bucket index: 5
+  TCP ->80          : [600001, 600004, 600005, 600006]
+  UDP ->53          : [600003, 600004]
+  TCP ->443         : [600002, 600004, 600006]
+  TCP 80-> (server) : [600001, 600004, 600005, 600006]
+  [PASS] TCP->80 lay duoc rule tcp 80
+  [PASS] TCP->80 khong lay rule tcp 443
+  [PASS] TCP->80 khong lay rule UDP
+  [PASS] rule 'ip any' ap dung cho TCP
+  [PASS] rule 'ip any' ap dung cho ca UDP
+  [PASS] UDP->53 lay duoc rule udp 53
+  [PASS] UDP->53 khong lay rule TCP
+  [PASS] rule <> src 80 bat duoc chieu server->client
+  [PASS] rule port range nam trong candidate
+  [PASS] indexer co loai bot rule, khong duyet toan bo
+
+=== T06 PASSED ===

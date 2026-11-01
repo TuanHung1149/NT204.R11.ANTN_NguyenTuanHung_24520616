@@ -1,0 +1,13 @@
+T01 - Nap file rule co comment va dong trong
+  So dong dua sang parser: 3
+    dong 3: alert tcp any any -> any 80 (msg:"Rule hop le 1"; content:"G...
+    dong 6: alert udp any any -> any 53 (msg:"Rule hop le 2"; content:"t...
+    dong 8: alert tcp any any -> any 443 (msg:"Rule hop le 3"; sid:90000...
+  [PASS] chi 3 rule duoc dua sang parser
+  [PASS] khong co dong comment
+  [PASS] khong co dong trong
+  [PASS] khong co canh bao
+  [PASS] ca 3 rule deu valid
+  [PASS] sid dung thu tu
+
+=== T01 PASSED ===

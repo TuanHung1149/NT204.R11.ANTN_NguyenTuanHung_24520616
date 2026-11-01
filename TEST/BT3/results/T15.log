@@ -1,0 +1,25 @@
+T15 - Nap bo rule Snort community that (muc 2 cua de bai)
+  rule doc duoc : 568
+  valid         : 42
+  unsupported   : 526
+  invalid       : 0
+
+  Top ly do unsupported:
+     190  keyword 'http_uri' ngoai pham vi
+      83  keyword 'file_data' ngoai pham vi
+      59  keyword 'pcre' ngoai pham vi
+      50  keyword 'http_header' ngoai pham vi
+      36  keyword 'flowbits' ngoai pham vi
+      27  keyword 'http_client_body' ngoai pham vi
+  [PASS] doc duoc bo rule that (>100 rule)
+  [PASS] co rule nam trong pham vi ho tro
+  [PASS] rule ngoai pham vi bi danh dau unsupported
+  [PASS] khong co rule bi parse sai (invalid=0)
+  [PASS] moi rule unsupported deu co ly do
+  [PASS] chi rule valid duoc dua vao danh gia
+  [PASS] moi rule valid deu co sid
+
+  candidate cho TCP->80: 25/42
+  [PASS] indexer khong tra nhieu hon tong so rule
+
+=== T15 PASSED ===

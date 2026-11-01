@@ -1,0 +1,27 @@
+T17 - Chay main.py that bang dong lenh (CLI end-to-end)
+
+  [e2e.pcap] exit=0, 114 dong output
+  [PASS] chay xong khong loi
+  [PASS] khong co exception
+  [PASS] in ra canh bao traversal
+  [PASS] in ra canh bao SQL injection
+  [PASS] in ra canh bao DNS
+  [PASS] in ra noi dung da khop
+  [PASS] in bang tong ket flow
+  [PASS] in bang tong ket engine
+  [PASS] flow TCP ket thuc CLOSED
+  [test_traffic.pcap] exit=0
+  [PASS] pcap bai 1 chay xong khong loi
+  [PASS] detector port scan van canh bao
+  [PASS] detector brute force van canh bao
+  [PASS] detector DNS tunneling van canh bao
+  [chay tu thu muc /] exit=0
+  [PASS] chay duoc tu thu muc bat ky
+  [PASS] ket qua giong nhau du chay o dau
+  [PASS] khong loi duong dan config
+  [PASS] in canh bao khi nap rule
+  detection in ra: 28 | dong tong ket: ['  CORE ENGINE - 28 detection event']
+  [PASS] co in detection event
+  [PASS] so dem trong tong ket khop so dong da in
+
+=== T17 PASSED ===

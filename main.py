@@ -1,3 +1,4 @@
+import os
 import sys
 import signal
 from scapy.all import rdpcap
@@ -16,7 +17,8 @@ brute_force = BruteForceDetector()
 dns_anomaly = DNSAnomalyDetector()
 syn_flood = SYNFloodDetector()
 flow_tracker = FlowTracker()
-engine = build_engine()
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+engine = build_engine(os.path.join(BASE_DIR, "config", "engine.json"), BASE_DIR)
 
 packet_count = 0
 detection_count = 0
